@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Jogo da Velha</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/jogodavelha.css">
+</head>
+<body>
+	<div class="container" id="titulo">
+			<h1>Jogo da Velha</h1>
+		</div>
+	<article id="jogo">
+		<div class="container" id="botoes">
+			<div id="selecione">
+				<div class="row">
+					<p>Com quem deseja jogar?</p>
+				</div>
+				<div class="row row-2">
+					<button class="btn btn-1" id="IA">Inteligência Artificial</button>
+				</div>
+				<div class="row row-3">
+					<button class="btn btn-1" id="PXP">Player x Player</button>
+				</div>
+			</div>
+			<div id="inicio">
+				<div class="row">
+					<div class="col-4"><button id="0" class="btn btn-1 btnj"></button></div>
+					<div class="col-4"><button id="1" class="btn btn-1 btnj"></button></div>
+					<div class="col-4"><button id="2" class="btn btn-1 btnj"></button></div>
+				</div>
+				<div class="row">
+					<div class="col-4"><button id="3" class="btn btn-1 btnj"></button></div>
+					<div class="col-4"><button id="4" class="btn btn-1 btnj"></button></div>
+					<div class="col-4"><button id="5" class="btn btn-1 btnj"></button></div>
+				</div>
+				<div class="row">
+					<div class="col-4"><button id="6" class="btn btn-1 btnj"></button></div>
+					<div class="col-4"><button id="7" class="btn btn-1 btnj"></button></div>
+					<div class="col-4"><button id="8" class="btn btn-1 btnj"></button></div>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="resultado">
+			<div class="row row-1"><p id="res">Resultado</p></div>
+			<div class="row row-2">
+				<div id="P1">0</div>
+				<div id="P2">0</div>
+			</div>
+			<div class="row"><button class="btn btn-1" id="resetar">Resetar</button></div>
+		</div>
+	</article>
+
+	<script src="lib/jquery/jquery.min.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script>
+
+		var btnvet = [0,0,0,0,0,0,0,0,0];
+		var i;
+		var placar1 = 0;
+		var placar2 = 0;
+		var j = 0;
+
+		$( "#IA" ).click(function() {
+  			$("#selecione").css("display","none");
+  			$("#inicio").css("display","block");
+
+  			$(".btnj").click(function(event){
+  				var btnid = event.target.id;
+
+  				// Jogada Player
+  				$("#"+btnid).addClass("X");
+  				$("#"+btnid).html("X");
+  				$("#"+btnid).prop("disabled",true);
+  				btnvet[parseInt(btnid)] = 1;
+
+  				if (((btnvet[0]==1) && (btnvet[1]==1) && (btnvet[2]==1)) || 
+  					  ((btnvet[3]==1) && (btnvet[4]==1) && (btnvet[5]==1)) ||
+  					  ((btnvet[6]==1) && (btnvet[7]==1) && (btnvet[8]==1)) ||
+					  ((btnvet[0]==1) && (btnvet[3]==1) && (btnvet[6]==1)) ||
+					  ((btnvet[1]==1) && (btnvet[4]==1) && (btnvet[7]==1)) ||
+					  ((btnvet[2]==1) && (btnvet[5]==1) && (btnvet[8]==1)) ||
+					  ((btnvet[0]==1) && (btnvet[4]==1) && (btnvet[8]==1)) ||
+					  ((btnvet[2]==1) && (btnvet[4]==1) && (btnvet[6]==1))){
+  					$("#res").html("O jogador 1 venceu!");
+  					$(".btnj").prop("disabled",true);
+  					placar1 = placar1 + 1;
+  					$("#P1").html(placar1);
+  				}
+  				else{
+
+	  				// Jogada Computador
+	  				for(i=0;i<8;i++){
+	  					if((btnvet[i]!=1) && (btnvet[i]!=2)){
+	  						$("#"+i).addClass("O");
+	  						$("#"+i).html("O");
+	  						$("#"+i).prop("disabled",true);
+	  						btnvet[i] = 2;
+	  						break;
+	  					}
+	  				}
+
+	  				if (((btnvet[0]==2) && (btnvet[2]==2) && (btnvet[2]==2)) || 
+	  					  ((btnvet[3]==2) && (btnvet[4]==2) && (btnvet[5]==2)) ||
+	  					  ((btnvet[6]==2) && (btnvet[7]==2) && (btnvet[8]==2)) ||
+						  ((btnvet[0]==2) && (btnvet[3]==2) && (btnvet[6]==2)) ||
+						  ((btnvet[2]==2) && (btnvet[4]==2) && (btnvet[7]==2)) ||
+						  ((btnvet[2]==2) && (btnvet[5]==2) && (btnvet[8]==2)) ||
+						  ((btnvet[0]==2) && (btnvet[4]==2) && (btnvet[8]==2)) ||
+						  ((btnvet[2]==2) && (btnvet[4]==2) && (btnvet[6]==2))){
+	  					$("#res").html("O computador venceu!");
+	  					$(".btnj").prop("disabled",true);
+	  					placar2 = placar2 + 1;
+	  					$("#P2").html(placar2);
+	  				}
+
+  				}
+
+  			});
+		});
+
+		$( "#PXP" ).click(function() {
+  			$("#selecione").css("display","none");
+  			$("#inicio").css("display","block");
+
+  			$(".btnj").click(function(event){
+  				var btnid = event.target.id;
+
+  				// Jogada Player
+  				if(j%2 == 0){
+  				$("#"+btnid).addClass("X");
+  				$("#"+btnid).html("X");
+  				$("#"+btnid).prop("disabled",true);
+  				btnvet[parseInt(btnid)] = 1;
+  				} else {
+  				$("#"+btnid).addClass("O");
+  				$("#"+btnid).html("O");
+  				$("#"+btnid).prop("disabled",true);
+  				btnvet[parseInt(btnid)] = 2;
+  				}
+
+  				if (((btnvet[0]==1) && (btnvet[1]==1) && (btnvet[2]==1)) || 
+  					  ((btnvet[3]==1) && (btnvet[4]==1) && (btnvet[5]==1)) ||
+  					  ((btnvet[6]==1) && (btnvet[7]==1) && (btnvet[8]==1)) ||
+					  ((btnvet[0]==1) && (btnvet[3]==1) && (btnvet[6]==1)) ||
+					  ((btnvet[1]==1) && (btnvet[4]==1) && (btnvet[7]==1)) ||
+					  ((btnvet[2]==1) && (btnvet[5]==1) && (btnvet[8]==1)) ||
+					  ((btnvet[0]==1) && (btnvet[4]==1) && (btnvet[8]==1)) ||
+					  ((btnvet[2]==1) && (btnvet[4]==1) && (btnvet[6]==1))){
+  					$("#res").html("O jogador 1 venceu!");
+  					$(".btnj").prop("disabled",true);
+  					placar1 = placar1 + 1;
+  					$("#P1").html(placar1);
+  				}
+  				
+
+  				if (((btnvet[0]==2) && (btnvet[2]==2) && (btnvet[2]==2)) || 
+  					  ((btnvet[3]==2) && (btnvet[4]==2) && (btnvet[5]==2)) ||
+  					  ((btnvet[6]==2) && (btnvet[7]==2) && (btnvet[8]==2)) ||
+					  ((btnvet[0]==2) && (btnvet[3]==2) && (btnvet[6]==2)) ||
+					  ((btnvet[2]==2) && (btnvet[4]==2) && (btnvet[7]==2)) ||
+					  ((btnvet[2]==2) && (btnvet[5]==2) && (btnvet[8]==2)) ||
+					  ((btnvet[0]==2) && (btnvet[4]==2) && (btnvet[8]==2)) ||
+					  ((btnvet[2]==2) && (btnvet[4]==2) && (btnvet[6]==2))){
+  					$("#res").html("O jogador 2 venceu!");
+  					$(".btnj").prop("disabled",true);
+  					placar2 = placar2 + 1;
+  					$("#P2").html(placar2);
+  				}
+
+  				j = j+1;
+
+  			});
+		});
+
+		$("#resetar").click(function(){
+			$("#inicio").css("display","none");
+  			$("#selecione").css("display","block");
+  			btnvet = [0,0,0,0,0,0,0,0,0];
+
+  			$(".btnj").removeClass("X");
+  			$(".btnj").html("");
+  			$(".btnj").prop("disabled",false);
+  			$(".btnj").removeClass("O");
+  			$(".btnj").html("");
+  			$(".btnj").prop("disabled",false);
+
+  			$(".btnj").off();
+
+  			i = 0;
+
+  			j = 0;
+
+  			btnvet[parseInt(btnid)] = 0;
+
+  			placar1 = 0;
+
+  			placar2 = 0;
+		});
+
+	</script>
+
+</body>
+</html>
